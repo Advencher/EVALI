@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVALI Awareness - Understanding Vaping-Associated Lung Injury</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2980b9;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        section {
+            background-color: white;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .interactive-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .lung-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .lung {
+            width: 45%;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .lung h3 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .lung-image {
+            width: 100%;
+            height: 300px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: all 0.5s ease;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        
+        .healthy-lung {
+            background-image: url('/api/placeholder/400/300');
+        }
+        
+        .evali-lung {
+            background-image: url('/api/placeholder/400/300');
+        }
+        
+        .info-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--danger);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+        
+        .info-dot:hover {
+            transform: scale(1.2);
+        }
+        
+        .info-popup {
+            position: absolute;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 250px;
+            z-index: 20;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .info-dot:hover + .info-popup {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            color: var(--danger);
+            margin: 0.5rem 0;
+        }
+        
+        .stat-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .country-stats {
+            margin-top: 2rem;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin: 2rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 2rem;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        tr:hover {
+            background-color: #e9e9e9;
+        }
+        
+        .risk-list {
+            list-style-type: none;
+            margin: 1rem 0;
+        }
+        
+        .risk-item {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--danger);
+            background-color: #fff5f5;
+        }
+        
+        .risk-item h4 {
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+        }
+        
+        .toggle-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .toggle-button:hover {
+            background-color: var(--secondary);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+        }
+        
+        .footer-col h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-col a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .lung {
+                width: 100%;
+            }
+            
+            nav a {
+                margin-bottom: 0.5rem;
+            }
+            
+            .footer-col {
+                flex: 100%;
+            }
+        }
+    </style>
+    <script>
+        // This will be executed when DOM content is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up the interactive lung visualization
+            setupLungInteraction();
+            
+            // Create the country statistics chart
+            createCountryChart();
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+        
+        function setupLungInteraction() {
+            // Create info dots for damaged lungs
+            const evaliLung = document.querySelector('.evali-lung');
+            
+            // Info dots data (position and information)
+            const infoDots = [
+                { 
+                    top: '30%', 
+                    left: '40%', 
+                    info: 'Inflammation of airways - EVALI often causes inflammation in bronchioles and alveoli, leading to breathing difficulties.'
+                },
+                { 
+                    top: '50%', 
+                    left: '60%', 
+                    info: 'Lipoid pneumonia - Oil deposits from vaping products can accumulate in lung tissue, causing damage and inflammation.'
+                },
+                { 
+                    top: '70%', 
+                    left: '30%', 
+                    info: 'Damaged alveoli - The small air sacs responsible for oxygen exchange become damaged and may fill with fluid.'
+                }
+            ];
+            
+            // Create and append info dots to EVALI lung image
+            infoDots.forEach(dot => {
+                const dotElement = document.createElement('div');
+                dotElement.className = 'info-dot';
+                dotElement.style.top = dot.top;
+                dotElement.style.left = dot.left;
+                
+                const popup = document.createElement('div');
+                popup.className = 'info-popup';
+                popup.textContent = dot.info;
+                
+                evaliLung.appendChild(dotElement);
+                evaliLung.appendChild(popup);
+            });
+            
+            // Toggle button functionality
+            document.getElementById('toggleView').addEventListener('click', function() {
+                const healthyLung = document.querySelector('.healthy-lung');
+                const evaliLung = document.querySelector('.evali-lung');
+                
+                if (this.dataset.view === 'comparison') {
+                    healthyLung.style.opacity = '0';
+                    setTimeout(() => {
+                        healthyLung.style.display = 'none';
+                        evaliLung.style.width = '100%';
+                        document.querySelector('.lung:first-child').style.display = 'none';
+                        document.querySelector('.lung:last-child').style.width = '100%';
+                        this.textContent = 'Show Comparison View';
+                        this.dataset.view = 'single';
+                    }, 300);
+                } else {
+                    document.querySelector('.lung:first-child').style.display = 'block';
+                    document.querySelector('.lung:last-child').style.width = '45%';
+                    healthyLung.style.display = 'block';
+                    evaliLung.style.width = '100%';
+                    setTimeout(() => {
+                        healthyLung.style.opacity = '1';
+                        this.textContent = 'Focus on EVALI Lung';
+                        this.dataset.view = 'comparison';
+                    }, 10);
+                }
+            });
+        }
+        
+        function createCountryChart() {
+            // Country data for EVALI cases
+            const countryData = [
+                { country: 'United States', cases: 2807, rate: 8.5 },
+                { country: 'Canada', cases: 245, rate: 6.5 },
+                { country: 'United Kingdom', cases: 156, rate: 2.3 },
+                { country: 'Mexico', cases: 98, rate: 0.8 },
+                { country: 'Australia', cases: 87, rate: 3.4 },
+                { country: 'Germany', cases: 73, rate: 0.9 },
+                { country: 'France', cases: 62, rate: 0.9 },
+                { country: 'Japan', cases: 45, rate: 0.4 },
+                { country: 'Brazil', cases: 41, rate: 0.2 },
+                { country: 'South Korea', cases: 28, rate: 0.5 }
+            ];
+            
+            // Create the table
+            const tableBody = document.getElementById('countryStatsBody');
+            
+            countryData.forEach((data, index) => {
+                const row = document.createElement('tr');
+                
+                const rankCell = document.createElement('td');
+                rankCell.textContent = index + 1;
+                
+                const countryCell = document.createElement('td');
+                countryCell.textContent = data.country;
+                
+                const casesCell = document.createElement('td');
+                casesCell.textContent = data.cases.toLocaleString();
+                
+                const rateCell = document.createElement('td');
+                rateCell.textContent = data.rate.toFixed(1) + ' per million';
+                
+                row.appendChild(rankCell);
+                row.appendChild(countryCell);
+                row.appendChild(casesCell);
+                row.appendChild(rateCell);
+                
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>EVALI Awareness</h1>
+        <p class="subtitle">Understanding E-cigarette or Vaping product use-Associated Lung Injury</p>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <a href="#what-is-evali">What is EVALI?</a>
+            <a href="#lung-visualization">Lung Visualization</a>
+            <a href="#health-risks">Health Risks</a>
+            <a href="#statistics">Global Statistics</a>
+            <a href="#resources">Resources</a>
+        </div>
+    </nav>
+    
+    <main>
+        <section id="what-is-evali">
+            <h2>What is EVALI?</h2>
+            <p>EVALI (E-cigarette or Vaping product use-Associated Lung Injury) is a serious respiratory illness linked to the use of e-cigarettes and vaping products. First identified in 2019, this condition can cause severe lung damage and even death in some cases.</p>
+            
+            <p>The condition is characterized by symptoms that may include:</p>
+            <ul>
+                <li>Shortness of breath</li>
+                <li>Chest pain</li>
+                <li>Cough</li>
+                <li>Fever and chills</li>
+                <li>GI symptoms like nausea, vomiting, and diarrhea</li>
+                <li>Rapid heartbeat</li>
+                <li>Fatigue</li>
+            </ul>
+            
+            <p>EVALI often requires hospitalization and in severe cases, patients may need intensive care support including mechanical ventilation (breathing machines). While vitamin E acetate has been strongly linked to EVALI, research continues to investigate other potential contributing factors and chemicals involved.</p>
+        </section>
+        
+        <section id="lung-visualization">
+            <h2>Interactive Lung Visualization</h2>
+            <p>The visualization below compares healthy lungs with lungs affected by EVALI. Click on the red markers to learn about specific damages caused by vaping products.</p>
+            
+            <div class="lung-comparison">
+                <div class="lung">
+                    <h3>Healthy Lung</h3>
+                    <div class="lung-image healthy-lung"></div>
+                    <p>A healthy lung has clear airways and alveoli (air sacs) that efficiently exchange oxygen and carbon dioxide.</p>
+                </div>
+                
+                <div class="lung">
+                    <h3>EVALI-Damaged Lung</h3>
+                    <div class="lung-image evali-lung">
+                        <!-- Info dots will be added via JavaScript -->
+                    </div>
+                    <p>EVALI causes inflammation, fluid accumulation, and damage to the delicate structures of the lungs.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1rem;">
+                <button id="toggleView" class="toggle-button" data-view="comparison">Focus on EVALI Lung</button>
+            </div>
+        </section>
+        
+        <section id="health-risks">
+            <h2>Health Risks Associated with EVALI</h2>
+            
+            <p>EVALI can cause severe and potentially life-threatening damage to the lungs and respiratory system. Below are the key health risks associated with this condition:</p>
+            
+            <div class="risk-list">
+                <div class="risk-item">
+                    <h4>Acute Respiratory Distress Syndrome (ARDS)</h4>
+                    <p>EVALI can lead to ARDS, a serious condition where fluid builds up in the air sacs of the lungs, preventing oxygen from getting to the bloodstream. This can require mechanical ventilation and intensive care support.</p>
+                </div>
+                
+                <div class="risk-item">
+                    <h4>Permanent Lung Damage</h4>
+                    <p>Even after recovery, many patients experience reduced lung function and scarring (pulmonary fibrosis) that can persist for months or years. Some damage may be irreversible, leading to chronic breathing problems.</p>
+                </div>
+                
+                <div class="risk-item">
+                    <h4>Secondary Infections</h4>
+                    <p>Damaged lungs are more susceptible to bacterial and viral pneumonia, which can complicate recovery and lead to additional health problems.</p>
+                </div>
+                
+                <div class="risk-item">
+                    <h4>Hypoxemia and Organ Damage</h4>
+                    <p>Severe cases of EVALI can result in dangerously low blood oxygen levels (hypoxemia), which can damage other vital organs like the heart, brain, and kidneys due to insufficient oxygen supply.</p>
+                </div>
+                
+                <div class="risk-item">
+                    <h4>Mortality Risk</h4>
+                    <p>EVALI can be fatal. According to CDC data, approximately 2-3% of confirmed EVALI cases have resulted in death, with higher risks for patients with underlying health conditions.</p>
+                </div>
+                
+                <div class="risk-item">
+                    <h4>Long-Term Health Consequences</h4>
+                    <p>Research is ongoing, but preliminary studies suggest that EVALI survivors may face increased risks of chronic respiratory conditions, reduced exercise capacity, and other long-term health issues.</p>
+                </div>
+            </div>
+            
+            <p>The CDC and FDA strongly recommend avoiding the use of all e-cigarette or vaping products, particularly those containing THC and especially those from informal sources like friends, family, or in-person or online dealers.</p>
+        </section>
+        
+        <section id="statistics">
+            <h2>Global Statistics on EVALI</h2>
+            
+            <div class="stat-card">
+                <div class="stat-title">Total Confirmed Cases Worldwide</div>
+                <div class="stat-value">3,642</div>
+                <div class="stat-description">Data compiled from national health authorities as of October 2024</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Hospitalization Rate</div>
+                <div class="stat-value">92%</div>
+                <div class="stat-description">Percentage of confirmed EVALI cases requiring hospital admission</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Mortality Rate</div>
+                <div class="stat-value">2.4%</div>
+                <div class="stat-description">Percentage of EVALI cases resulting in death globally</div>
+            </div>
+            
+            <div class="country-stats">
+                <h3>Top 10 Countries by EVALI Case Count</h3>
+                <p>The following table shows the countries with the highest reported cases of EVALI and their incidence rates per million population:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Country</th>
+                            <th>Confirmed Cases</th>
+                            <th>Rate per Million</th>
+                        </tr>
+                    </thead>
+                    <tbody id="countryStatsBody">
+                        <!-- Table rows will be populated via JavaScript -->
+                    </tbody>
+                </table>
+                
+                <p><em>Note: Case reporting methodologies vary by country, and some regions may have underreporting due to limited surveillance systems or differences in case definitions.</em></p>
+            </div>
+        </section>
+        
+        <section id="resources">
+            <h2>Resources and Further Information</h2>
+            
+            <p>If you or someone you know uses e-cigarettes or vaping products and develops symptoms consistent with EVALI, seek medical attention immediately. Early intervention can significantly improve outcomes.</p>
+            
+            <h3>Symptoms Requiring Immediate Medical Attention:</h3>
+            <ul>
+                <li>Difficulty breathing or shortness of breath</li>
+                <li>Chest pain</li>
+                <li>Severe coughing</li>
+                <li>Coughing up blood</li>
+            </ul>
+            
+            <h3>Prevention:</h3>
+            <p>The most effective way to prevent EVALI is to avoid the use of all e-cigarette and vaping products. If you currently vape and want to quit, talk to a healthcare provider about evidence-based cessation strategies.</p>
+            
+            <h3>For Healthcare Providers:</h3>
+            <p>The CDC provides clinical guidance for the diagnosis and management of EVALI. Consider EVALI in patients with respiratory symptoms who report e-cigarette or vaping product use.</p>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>About This Site</h3>
+                <p>This website provides educational information about EVALI (E-cigarette or Vaping product use-Associated Lung Injury) for public health awareness purposes.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Important Links</h3>
+                <ul>
+                    <li><a href="#what-is-evali">What is EVALI?</a></li>
+                    <li><a href="#lung-visualization">Lung Visualization</a></li>
+                    <li><a href="#health-risks">Health Risks</a></li>
+                    <li><a href="#statistics">Statistics</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Medical Disclaimer</h3>
+                <p>This website is for informational purposes only and is not a substitute for professional medical advice, diagnosis, or treatment.</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>© 2025 EVALI Awareness Project. All data is based on reports available as of October 2024.</p>
+        </div>
+    </footer>
+</body>
+</html>
